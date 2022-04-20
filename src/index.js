@@ -1,6 +1,6 @@
 const express = require("express");
 const path = require("path");
-const mysql = require("mysql")
+const mysql = require("mysql2")
 require('dotenv').config()
 
 var hist
@@ -20,12 +20,12 @@ const data = {
   time: "",
   date: "",
 }
-
+console.log(process.env.HOST)
 var con = mysql.createConnection({  
-  host: process.env.HOST,  
-  user: process.env.USER_DB,  
-  password: process.env.PASSWORD,  
-  database: process.env.DB  
+  host: 'database-diseno.cw48hb7r0nz7.us-east-1.rds.amazonaws.com',
+  user: 'admin',  
+  password: 'Rabt_28161',  
+  database: 'diseno'  
 });  
 con.connect(function(err) {  
 if (err) throw err;  
