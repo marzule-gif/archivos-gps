@@ -107,11 +107,12 @@ async function getData() {  //This is for real time
             date.innerHTML = row[2].fecha;
             time.innerHTML = row[2].hora;
             distancia.innerHTML = row[2].distancia;
+            console.log(distancia);
         }
 
         if(vehiculo2.checked && row[0] == 'ABC123') {
             console.log("vehiculo 2")
-            const polyline = L.polyline(row[1], {color: 'aqua'}).addTo(map)
+            const polyline = L.polyline(row[1], {color: 'red'}).addTo(map)
             polilineas.push(polyline);
             const marcador = L.marker(row[1][row[1].length - 1]).bindPopup('Usted está aquí').addTo(map)
             marcadores.push(marcador)
@@ -120,7 +121,6 @@ async function getData() {  //This is for real time
             long2.innerHTML = row[1][row[1].length - 1][1]
             date2.innerHTML = row[2].fecha;
             time2.innerHTML = row[2].hora;
-            distancia2.innerHTML = row[2].distancia;
         }    
         // Aquí termina la verificación. O sea, es un if.
     }

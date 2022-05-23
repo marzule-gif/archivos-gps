@@ -33,17 +33,19 @@ checker1.addEventListener('change', function(e) {
 
     if(polyline2.length > 0) {
         map.removeLayer(polyline2[0]);
+        polyline2 = [];
     }
 
     if(polyline3.length > 0) {
         map.removeLayer(polyline3[0]);
+        polyline3 = [];
     }
 
     if(this.checked) {
-        polyline2.push(L.polyline(vector1).addTo(map));
+        polyline2.push(L.polyline(vector1, {color: 'blue'}).addTo(map));
     }
     if(checker2.checked) {
-        polyline3.push(L.polyline(vector2).addTo(map));
+        polyline3.push(L.polyline(vector2, {color: 'red'}).addTo(map));
     }
 });
 
@@ -52,17 +54,20 @@ checker2.addEventListener('change', function(e) {
 
     if(polyline2.length > 0) {
         map.removeLayer(polyline2[0]);
+        polyline2 = [];
     }
 
     if(polyline3.length > 0) {
         map.removeLayer(polyline3[0]);
+        polyline3 = [];
     }
 
+
     if(this.checked) {
-        polyline3.push(L.polyline(vector2).addTo(map));
+        polyline3.push(L.polyline(vector2, {color: 'red'}).addTo(map));
     }
     if(checker1.checked) {
-        polyline2.push(L.polyline(vector1).addTo(map));
+        polyline2.push(L.polyline(vector1, {color: 'blue'}).addTo(map));
     }
 });
 
@@ -167,7 +172,7 @@ function create_hist_item(object, id) {
 
         const index = document.createElement('div');
         index.classList.add('index');
-        index.innerHTML = id;
+        index.innerHTML = object.idTaxi;
 
         const place_content = document.createElement('div');
         place_content.classList.add('place-item-content');
