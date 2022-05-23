@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaxiLoc</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
+   
+   <link rel="stylesheet"href = "/css/historicos.css">
+
+</head>
+<body>
+    <nav>
+        <h1 id="title">Ubicación GPS</h1>
+        <div id="checkForm" class="checkForm" style="position: absolute; right: 600px; top: 100px; background-color: white; padding: 10px; border-radius:5px; box-shadow: 2px 2px 10px black;">
+            <h4 style="margin:0px 0px 5px; padding:0px; text-align:center">Placas</h4>
+            <input type="checkbox" name="vehicle1"  id="vehicle1" data-placa="DEF456">
+            <label for="vehicle1">DEF456</label><br>
+
+            <input type="checkbox" name="vehicle2" id="vehicle2" data-placa="ABC123">
+            <label for="vehicle2">ABC123</label>
+        </div>
+        <div class="buttons-container">
+            <button class="realtime">Tiempo real</button>
+            <button class="hist">Historicos</button>
+        </div>
+    </nav>
+    <section id="datos">
+        <section id="fechas" class="fechas">
+            <div>
+                <label for="start">Inicio</label>
+                <input id="start" type="datetime-local" placeholder="Select DateTime">
+            </div>
+            <div>
+                <label for="stop">Final </label>
+                <input id="stop" type="datetime-local" placeholder="Select DateTime">
+            </div>
+            <div>
+                <input id="button" type="button" value="Trazar recorrido histórico del vehículo">
+            </div>
+        </section>
+
+        <section class="byplace"></section>
+    </section>
+    
+    <section class="map-container">
+        <div id="mapa"></div>
+    </section>
+    
+    
+
+    
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+
+    <script src="/scripts/historicos.js"></script>
+</body>
+</html>

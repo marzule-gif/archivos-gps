@@ -8,13 +8,32 @@ let polyline = null;
 let polyline2 = null;
 var Coords_Ts = new Array();
 
+var marcadores = new Array();
+var polilineas = new Array();
+
+const hist_btn = document.querySelector('.hist');
 const byplace = document.querySelector('.byplace');
 const long = document.getElementById("long");
 const lat = document.getElementById("lat");
 const time = document.getElementById("time");
 const date = document.getElementById("date");
+const distancia = document.getElementById('distancia');
+const vehiculo1 = document.getElementById('vehicle1');
+const vehiculo2 = document.getElementById('vehicle2');
+
+const long2 = document.getElementById("long2");
+const lat2 = document.getElementById("lat2");
+const time2 = document.getElementById("time2");
+const date2 = document.getElementById("date2");
+const distancia2 = document.getElementById('distancia2');
+
 let start = 0
 let end = 0
+
+hist_btn.addEventListener('click', function(e){
+    e.preventDefault();
+    window.location.replace('/historicos');
+});
 
 map.on('click', function(e){
     byplace.innerHTML = null;
@@ -44,100 +63,78 @@ map.on('click', function(e){
     }
 });
 
-document.getElementById("start").addEventListener("change", function() {
-    var inicio = this.value;
-    start = new Date(inicio).getTime();
-})
-
-document.getElementById("stop").addEventListener("change", function() {
-    var fin = this.value
-    end = new Date(fin).getTime();
-    console.log(end)
-})
-
-const button = document.getElementById("button");
-button.addEventListener("click",function(e){
-    e.preventDefault();
-
-    var fechas =[start, end];
-    console.log(fechas)
-    fetch('/historicos', {
-        headers:{
-            'Content-type':'application/json'
-        },
-        method: 'post',
-        body: JSON.stringify(fechas)
-    }).then(res => res.json())
-
-    getFecha();
-})
-//el 2
-
 let array = [];
 
 async function getData() {  //This is for real time
     const res = await fetch('/data')
     let json = await res.json()
+    console.log(json.length)
 
-    const {latitud, longitud, hora, fecha} = json.data[0];
-    long.innerHTML=longitud;
-    lat.innerHTML=latitud;
-    time.innerHTML=hora;
-    date.innerHTML=fecha;
+    for(var i=0; i<json.length; i++) {
+        const {latitud, longitud, hora, fecha, idTaxi, distancia} = json[i];
 
-    let LatLng = new L.LatLng(latitud, longitud)
-    array.push(LatLng);
+        let LatLng = [latitud, longitud];
+        var found = false;
 
-    if (marcador) marcador.setLatLng(LatLng)
-    else marcador = L.marker(LatLng).bindPopup('Usted está aquí').addTo(map)
+        for(var row of array) {
+            if(row[0] == idTaxi) {
+                found = true;
+                row[1].push(LatLng);
+                row[2] = {fecha, hora, distancia}
+                break;
+            }
+        }
+        if(!found) {
+            array.push([idTaxi, [LatLng], {fecha, hora, distancia}])
+        }
+    }
+    
+    console.log(array)
 
-    if (polyline) {
-        polyline.setLatLngs(array)
-    }else {
-        polyline = L.polyline(array, {color: 'aqua'}).addTo(map)
+    deleteLayers();
+    for(var row of array) {
+        // Aquí va una verificacion de qué check está activo.
+        console.log(vehiculo1.checked)
+        if(vehiculo1.checked && row[0] == 'DEF456') {
+            console.log(row[1])
+            const polyline = L.polyline(row[1], {color: 'aqua'}).addTo(map)
+            polilineas.push(polyline);
+            const marcador = L.marker(row[1][row[1].length - 1]).bindPopup('Usted está aquí').addTo(map)
+            marcadores.push(marcador)
+
+            lat.innerHTML = row[1][row[1].length - 1][0]
+            long.innerHTML = row[1][row[1].length - 1][1]
+            date.innerHTML = row[2].fecha;
+            time.innerHTML = row[2].hora;
+            distancia.innerHTML = row[2].distancia;
+        }
+
+        if(vehiculo2.checked && row[0] == 'ABC123') {
+            console.log("vehiculo 2")
+            const polyline = L.polyline(row[1], {color: 'aqua'}).addTo(map)
+            polilineas.push(polyline);
+            const marcador = L.marker(row[1][row[1].length - 1]).bindPopup('Usted está aquí').addTo(map)
+            marcadores.push(marcador)
+
+            lat2.innerHTML = row[1][row[1].length - 1][0]
+            long2.innerHTML = row[1][row[1].length - 1][1]
+            date2.innerHTML = row[2].fecha;
+            time2.innerHTML = row[2].hora;
+            distancia2.innerHTML = row[2].distancia;
+        }    
+        // Aquí termina la verificación. O sea, es un if.
     }
 }
 
+getData();
 setInterval(getData, 5000);
 
-async function getFecha() {     //This is for history
-    const res = await fetch('/request')
-    let json = await res.json()
-
-    let datos = json.data;
-    console.log("datos: ", datos);
-    Coords_Ts = datos;
-
-    var Nvector = [];
-    
-    for (var i = 0, max = datos.length; i < max; i+=1) {
-        Nvector.push([datos[i].latitud,datos[i].longitud]);
+function deleteLayers() {
+    for(var poly of polilineas) {
+        map.removeLayer(poly)
     }
-     polyline2 = L.polyline(Nvector, {color: 'blue'}).addTo(map)
-}
 
-function create_hist_item(object, id) {
-    const place_item = document.createElement('div');
-    place_item.classList.add('place-item');
-
-        const index = document.createElement('div');
-        index.classList.add('index');
-        index.innerHTML = id;
-
-        const place_content = document.createElement('div');
-        place_content.classList.add('place-item-content');
-
-            const place_coords = document.createElement('div');
-            place_coords.classList.add('place-item-coords');
-            place_coords.innerHTML = `${object.latitud}, ${object.longitud}`;
-
-            const place_time = document.createElement('div');
-            place_time.classList.add('place-item-time');
-            place_time.innerHTML = `${object.fecha} : ${object.hora}`;
-        place_content.appendChild(place_coords);
-        place_content.appendChild(place_time);
-    place_item.appendChild(index);
-    place_item.appendChild(place_content);
-
-    return place_item;
+    for(var marker of marcadores) {
+        map.removeLayer(marker)
+    }
 }
