@@ -17,54 +17,77 @@
 <body>
     <nav>
         <h1 id="title">Ubicación GPS</h1>
+        
         <div id="checkForm" class="checkForm" style="position: absolute; max-width: 100px; right:0px; left:0px; margin-right:auto; margin-left:auto; top: 100px; background-color: white; padding: 10px; border-radius:5px; box-shadow: 2px 2px 10px black;">
             <h4 style="margin:0px 0px 5px; padding:0px; text-align:center">Placas</h4>
-            <input type="checkbox" name="vehicle1" id="vehicle1" data-placa="1">
-            <label for="vehicle1">DEF456</label><br>
+            <input value="ABC123" type="checkbox" name="vehicle1" id="vehicle1" data-placa="1">
+            <label for="vehicle1">ABC123</label><br>
 
-            <input type="checkbox" name="vehicle2" id="vehicle2" data-placa="2">
-            <label for="vehicle2">ABC123</label>
+            <input value="DEF456" type="checkbox" name="vehicle2" id="vehicle2" data-placa="2">
+            <label for="vehicle2">DEF456</label>
         </div>
         <div class="buttons-container">
             
             <button class="hist">Historicos</button>
         </div>
-    </nav>
-
-    <section id="datos">
-        <section class="grid">
-            
-            <div class="name">Latitud: </div>
-            <div id="lat"></div>
-
-            <div class="name">Longitud: </div>
-            <div id="long"></div>
-
-            <div class="name">Fecha: </div>
-            <div id="date"></div>
-
-            <div class="name">Hora: </div>
-            <div id="time"></div>
-
-            <div class="name">Distancia: </div>
-            <div id="distancia"></div>
-            
-        </section>
-        <section class="grid">
-            <div class="name">Latitud: </div>
-            <div id="lat2"></div>
-
-            <div class="name">Longitud: </div>
-            <div id="long2"></div>
-
-            <div class="name">Fecha: </div>
-            <div id="date2"></div>
-
-            <div class="name">Hora: </div>
-            <div id="time2"></div>
-        </section>
-    </section>
+        </nav>
     
+    <section id="datos">
+        <table class="grid">
+            <tr>
+                <th colspan="2"> ABC123</th>
+            </tr>
+            <tr>
+                <th class="name">Latitud</th>
+                <td id="lat"></td>
+            </tr>
+        
+            <tr>
+                <th class="name">Longitud</th>
+                <td id="long"></td>
+            </tr>
+        
+            <tr>
+                <th class="name">Fecha</th>
+                <td id="date"></td>
+            </tr>
+        
+            <tr>
+                <th class="name">Hora</th>
+                <td id="time"></td>
+            </tr>
+
+            <tr>
+                <th class="name">Distancia</th>
+                <td id="distance"></td>
+            </tr>
+        </table>
+
+         <table class="grid">
+            <tr>
+                <th colspan="2"> DEF456</th>
+            </tr>
+            <tr>
+                <th class="name">Latitud</th>
+                <td id="lat2"></td>
+            </tr>
+        
+            <tr>
+                <th class="name">Longitud</th>
+                <td id="long2"></td>
+            </tr>
+        
+            <tr>
+                <th class="name">Fecha</th>
+                <td id="date2"></td>
+            </tr>
+        
+            <tr>
+                <th class="name">Hora</th>
+                <td id="time2"></td>
+            </tr>
+        </table>
+    </section>
 
     <div id="mapa"></div>
     
@@ -75,6 +98,6 @@
     integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
     crossorigin=""></script>
 
-    <script src="/scripts/scripts.js"type="module"></script>
+    <script src="/scripts/scripts.js"></script>
 </body>
 </html>

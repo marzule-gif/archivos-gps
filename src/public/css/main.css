@@ -2,6 +2,7 @@ body{
     padding: 0;
     margin: 0;
     background: #4D4C7D;
+    overflow: hidden;
 }
 
 nav {
@@ -87,33 +88,24 @@ nav h1 {
     font-style: italic;
 }
 
-.map-section {
-    border: 1px solid green;
-    width: 100%;
-    height: 90vh;
-}
-
 #mapa{
     width: 100vw;
     height: 66vh;
 }
-.grid {
-    min-width: 500px;
+.grid{
     background: white;
-    display: grid;
-    grid-template-columns: 50% 50%;
-}
-
-.grid > .name {
-    padding: 5px 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.grid div{
+    border: black solid 2px;
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
     text-align: center;
-    border: black solid 1px;
+    border-collapse: collapse;
+}
+
+td,th{
+    border: black 2px solid;
+    padding: 2px;
+    width: 100px;
 }
 
 .fechas{

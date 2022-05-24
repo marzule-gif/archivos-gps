@@ -21,7 +21,7 @@ const data = {
   time: "",
   date: "",
 }
-console.log(process.env.HOST)
+
 var con = mysql.createConnection({  
   host: 'database-diseno.cw48hb7r0nz7.us-east-1.rds.amazonaws.com',
   user: 'admin',  
@@ -41,27 +41,11 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname + "/public/main.html"));
 });
 
-app.get('/data',(req,res)=>{
-  
-  var cont = 0;
-  var datafinal = new Array();
-  placas = ['DEF456', 'ABC123'];
-
-  for(var i=0; i<placas.length; i++){
-    obtenerCarro(placas[i]).then(function(response){
-      datafinal.push(response);
-      if(cont == placas.length - 1){
-        console.log(datafinal);
-        res.send(datafinal);
-      }else{
-        cont++;
-      }
-    },
-    function(rejected){
-      console.log(rejected)
-    });
-  }
+app.get("/historicos", (req, res) => {
+  console.log(true)
+  res.sendFile(path.join(__dirname + "/public/historicos.html"));
 });
+
 
 server.on('error', (err) => {
   console.log(`server error:\n${err.stack}`);
@@ -71,22 +55,35 @@ server.on('error', (err) => {
 server.on('message', async (msg, senderInfo) => {
   console.log('Messages received ' + msg)
   const mensaje = String(msg).split("\n")
+  console.log(mensaje)
+  
+  if(mensaje != ''){
+    data.lat = mensaje[0].split(" ")[1];
+    data.long = mensaje[1].split(" ")[1];
+    data.time = mensaje[2].split(" ")[2];
+    data.date = mensaje[2].split(" ")[1].slice(1);
+    fecha = data.date+" "+data.time;
+    var ts = new Date(fecha).getTime();
+    if(mensaje.length==4){
+      data.id=mensaje[3].split(" ")[1]
+      
+    }else{
+      data.distance = mensaje[3].split(" ")[1];
+      
+      data.id=mensaje[4].split(" ")[1];
+    }
+    console.log(data.distance)
+    console.log(data.id)
 
-  data.lat = mensaje[0].split(" ")[1]
-  data.long = mensaje[1].split(" ")[1]
-  data.time = mensaje[2].split(" ")[2];
-  data.date = mensaje[2].split(" ")[1].slice(1)
-  fecha = data.date+" "+data.time;
-
-  var ts = new Date(fecha).getTime();
-  console.log(ts);
-
-  var sql = `INSERT INTO datos (latitud , longitud, hora, fecha,timestamp) VALUES ('${data.lat}','${data.long}','${data.time}','${data.date}','${ts}')`;
-  con.query(sql, function (err, result) {  
+    if(data.distance) var sql = `INSERT INTO datos (idTaxi, latitud , longitud, hora, fecha,timestamp,distancia) VALUES ('${data.id}','${data.lat}','${data.long}','${data.time}','${data.date}','${ts}','${data.distance}')`;
+    else var sql = `INSERT INTO datos (idTaxi, latitud , longitud, hora, fecha,timestamp) VALUES ('${data.id}','${data.lat}','${data.long}','${data.time}','${data.date}','${ts}')`;
+    con.query(sql, function (err, result) {  
     if (err) throw err;  
     console.log("dato recibido");  
-    });
+    });  
+  }
 });
+
 
 
 server.on('listening', (req, res) => {
@@ -121,23 +118,15 @@ app.get('/request',(req,res)=>{//historicos
 
 })
 
-function obtenerCarro(idTaxi){//tiempo real
-	return new Promise(function(resolve, reject){
-		con.query(`SELECT * FROM diseno.datos WHERE id= (SELECT MAX(id) FROM diseno.datos WHERE idTaxi = '${idTaxi}')`, function(error, data){
-			if(error){
-        reject(error)
-			}else{
-				resolve(data[0]);
-			}
-		});
-	});
-}
-
-
-
-
-
-
+app.get('/data',(req,res)=>{
+  let {id}=req.query;
+  con.query(`select * from datos where idTaxi="${id}" ORDER BY id DESC LIMIT 1`,(err,message)=>{
+     res.status(200).json({
+      data: message
+      
+    });
+  });
+});
 
 server.bind(3020);
 
