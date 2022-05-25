@@ -5,9 +5,7 @@ require('dotenv').config()
 
 var hist
 let fecha_in=0
-let hora_in =0
 let fecha_fin=0
-let hora_fin=0
 let fecha=0
 const dgram = require('dgram');
 const req = require("express/lib/request");

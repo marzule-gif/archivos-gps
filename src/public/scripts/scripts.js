@@ -55,34 +55,6 @@ hist_btn.addEventListener('click', function (e) {
     window.location.replace('/historicos');
 });
 
-/* map.on('click', function(e){
-    byplace.innerHTML = null;
-
-    for(var item of circles){
-        map.removeLayer(item);
-    }
-    const coord = [e.latlng.lat, e.latlng.lng];
-    const circle = L.circle(coord, {radius: cirlceRadius}).addTo(map);
-    circles.push(circle);
-
-    const centerPoint = circle.getLatLng();
-    var into = new Array();
-    for(var N of Coords_Ts){
-        const point = [N.latitud, N.longitud];
-        if(Math.abs(centerPoint.distanceTo(point) <= cirlceRadius)){
-            into.push(N);
-        }
-    }
-
-    console.log(into);
-    var cont = 0;
-    for(var place of into){
-        const item = create_hist_item(place, cont);
-        byplace.appendChild(item);
-        cont++;
-    }
-}); */
-
 let array = [];
 
 vehiculo1.addEventListener('change', function () {
@@ -165,5 +137,3 @@ async function getData(id) {
 
 
 
-
-let array2 = [];

@@ -102,12 +102,14 @@ map.on('click', function(e){
 document.getElementById("start").addEventListener("change", function() {
     var inicio = this.value;
     start = new Date(inicio).getTime();
+    document.getElementById("stop").min = this.value
 })
 
 
 document.getElementById("stop").addEventListener("change", function() {
     var fin = this.value
     end = new Date(fin).getTime();
+    document.getElementById("start").max = this.value
     console.log(end)
 })
 
